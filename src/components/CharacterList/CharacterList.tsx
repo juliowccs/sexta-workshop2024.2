@@ -30,7 +30,6 @@ export interface Location {
   url: string
 }
 
-
 export default function CharacterList() {
   const [data, setData] = useState<CharacterType[]>([])
   const [seach, setSearch] = useState('')
@@ -42,6 +41,10 @@ export default function CharacterList() {
       .catch((error) => console.log(error))
   }, [])
 
+  const filteredData = data.filter((character) =>
+    character.name.toLowerCase().includes(seach.toLowerCase())
+  )
+
   return (
     <>
       <input
@@ -51,14 +54,7 @@ export default function CharacterList() {
         placeholder="Pesquise um personagem"
       />
       <div className="flex flex-row flex-wrap justify-around gap-10 py-8">
-        {data
-          .filter((character) => {
-            if (seach === '') {
-              return character
-            } else if (character.name.toLowerCase().includes(seach.toLowerCase())) {
-              return character
-            }
-          })
+        {filteredData
           .map((character) => (
             <CharacterCard key={character.id} character={character} />
           ))}
